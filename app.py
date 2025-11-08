@@ -15,6 +15,32 @@ st.set_page_config(
     layout="centered"
 )
 
+# Custom CSS
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+}
+.header-banner {
+    background: linear-gradient(90deg, #2196f3, #00bcd4);
+    padding: 20px;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.card {
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #f0f4f8;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+</style>
+""", unsafe_allow_html=True)
 # ---------------------------
 # Header + About Section
 # ---------------------------
