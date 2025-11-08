@@ -128,13 +128,13 @@ if mode == "🔹 Manual Input":
             'Turbidity': Turbidity
         }
         return pd.DataFrame(data, index=[0])
-
+    feature_engineer = model.named_steps['WaterFeatureEngineer']
     input_df = user_input_features()
     st.subheader("🔍 Entered Water Quality Data:")
     st.write(input_df)
     
     if st.button("💧 Predict Water Safety"):
-        prediction = model.predict(input_df)
+        prediction = feature_engineer(input_df)
         prediction_proba = model.predict_proba(input_df)
 
         st.subheader("💡 Prediction Result")
@@ -164,7 +164,7 @@ elif mode == "📂 Batch CSV Upload":
         st.dataframe(df.head())
 
         if st.button("🚀 Predict for All Rows"):
-            processed_df = model.predict(input_df)
+            processed_df = feature_engineer(input_df)
             df['Potability_Prediction'] = model.predict(input_df)
 
             st.success("✅ Predictions generated successfully!")
