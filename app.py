@@ -8,49 +8,13 @@ import seaborn as sns
 # ---------------------------
 # Page Config
 # ---------------------------
+st.markdown('<div class = "header-banner"> 💧 Water Potability Predictor' unsafe_allow_html=True)
 st.set_page_config(
     page_title="NaN Masters | Water Potability Predictor",
     page_icon="💧",
     layout="centered"
 )
-st.markdown("""
 
-<style>  
-/* Background gradient */  
-body {  
-    background: linear-gradient(to bottom, #e0f7fa, #ffffff);  
-}  
-  
-/* Header Banner */  
-.header-banner {  
-    background: linear-gradient(90deg, #2196f3, #00bcd4);  
-    padding: 20px;  
-    border-radius: 12px;  
-    color: white;  
-    text-align: center;  
-    font-size: 28px;  
-    font-weight: bold;  
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);  
-}  
-  
-/* Card styling */  
-.card {  
-    padding: 15px;  
-    border-radius: 12px;  
-    background-color: #f0f4f8;  
-    margin-bottom: 15px;  
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);  
-}  
-  
-/* Team cards */  
-.team-card {  
-    padding: 12px;  
-    border-radius: 12px;  
-    background-color: #e3f2fd;  
-    margin-bottom: 12px;  
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);  
-}  
-</style> """, unsafe_allow_html=True)
 # ---------------------------
 # Header + About Section
 # ---------------------------
