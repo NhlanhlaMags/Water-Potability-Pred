@@ -76,7 +76,7 @@ class WaterFeatureEngineer(BaseEstimator, TransformerMixin):
  def fit(self, X, y=None):
   return self
  def transform(self, X):
- st.warning(" Using fallback WaterFeatureEngineer - no transformations applied")
+  st.warning(" Using fallback WaterFeatureEngineer - no transformations applied")
   return X.copy()
 
 # ---------------------------
