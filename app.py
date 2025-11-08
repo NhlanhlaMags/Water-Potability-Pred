@@ -38,7 +38,6 @@ st.markdown("""
 # ---------------------------
 # Header + About Section
 # ---------------------------
-st.title("💧 Water Potability Prediction App")
 
 st.markdown("""
 ### 👥 Who We Are
