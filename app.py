@@ -213,6 +213,8 @@ st.dataframe(feature_data.sort_values('Importance', ascending=False))
 # ---------------------------
 # Meet the Team Section
 # ---------------------------
+st.markdown("---")
+st.subheader("👩‍💻 Meet the Team")
 
 # Use team cards with styled LinkedIn links
 st.markdown('<div class="team-card">', unsafe_allow_html=True)
