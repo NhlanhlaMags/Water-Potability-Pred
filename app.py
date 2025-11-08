@@ -8,7 +8,6 @@ import seaborn as sns
 # ---------------------------
 # Page Config
 # ---------------------------
-st.markdown('<div class = "header-banner"> 💧 Water Potability Predictor', unsafe_allow_html=True)
 
 # Custom CSS
 st.markdown("""
