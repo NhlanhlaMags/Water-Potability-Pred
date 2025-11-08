@@ -1,11 +1,3 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
-import joblib
-from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
-import seaborn as sns
-
 # ---------------------------
 # Load trained model
 # ---------------------------
@@ -59,48 +51,6 @@ mode = st.radio(
     ("🔹 Manual Input", "📂 Batch CSV Upload"),
     horizontal=True
 )
-
-# ---------------------------
-# Advanced Feature Engineering
-# ---------------------------
-def feature_engineering(df):
-    df = df.copy()
-    df.fillna(df.median(), inplace=True)
-
-    # Log transformations
-    for col in ['Solids', 'Conductivity', 'Trihalomethanes']:
-        df[f'{col}_log'] = np.log1p(df[col])
-
-    # Binary safety indicators
-    df['ph_out_of_range'] = ((df['ph'] < 6.5) | (df['ph'] > 8.5)).astype(int)
-    df['high_solids'] = (df['Solids'] > 500).astype(int)
-    df['chloramine_safe'] = ((df['Chloramines'] >= 1) & (df['Chloramines'] <= 4)).astype(int)
-    df['sulfate_out_of_range'] = (df['Sulfate'] > 250).astype(int)
-    df['high_organic'] = (df['Organic_carbon'] > 20).astype(int)
-    df['trihalo_high'] = (df['Trihalomethanes'] > 80).astype(int)
-    df['turbid'] = (df['Turbidity'] > 5).astype(int)
-
-    # Interaction / ratio features
-    df['acidity_hardness_ratio'] = df['Hardness'] / df['ph']
-    df['organic_contamination_index'] = df['Organic_carbon'] * df['Trihalomethanes']
-    df['mineral_index'] = df['Solids'] / df['Conductivity']
-    df['chlorine_impact'] = df['Chloramines'] * df['ph']
-
-    df.replace([np.inf, -np.inf], np.nan, inplace=True)
-    df.fillna(df.median(), inplace=True)
-
-    # Polynomial features
-    df['pH_squared'] = df['ph'] ** 2
-    df['Turbidity_squared'] = df['Turbidity'] ** 2
-
-    # Scale numeric features
-    scaler = StandardScaler()
-    numeric_cols = ['ph', 'Hardness', 'Solids', 'Chloramines', 'Sulfate',
-                    'Conductivity', 'Organic_carbon', 'Trihalomethanes', 'Turbidity']
-    df[numeric_cols] = scaler.fit_transform(df[numeric_cols])
-
-    return df
-
 # ---------------------------
 # Manual Input Mode
 # ---------------------------
