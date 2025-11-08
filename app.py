@@ -213,6 +213,41 @@ st.dataframe(feature_data.sort_values('Importance', ascending=False))
 # ---------------------------
 # Meet the Team Section
 # ---------------------------
+
+# Use team cards with styled LinkedIn links
+st.markdown('<div class="team-card">', unsafe_allow_html=True)
+col1, col2 = st.columns([3, 1])
+with col1:
+    st.write("**Data Scientist:** Snenhlanhla Nsele")
+with col2:
+    st.markdown('<a href="https//.linkedin.com/in/sinenhlanhla-nsele-126a6a18a)" target="_blank">🔗 LinkedIn</a>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('<div class="team-card">', unsafe_allow_html=True)
+col1, col2 = st.columns([3, 1])
+with col1:
+    st.write("**Data Scientist:** Thandiwe Mkhabela")
+with col2:
+    st.markdown('<a href="https://www.linkedin.com/in/thandiwe-m" target="_blank">🔗 LinkedIn</a>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('<div class="team-card">', unsafe_allow_html=True)
+col1, col2 = st.columns([3, 1])
+with col1:
+    st.write("**Software Engineer** Thabiso Seema")
+with col2:
+    st.markdown('<a href="https://www.linkedin.com/in/thabisoseema" target="_blank">🔗 LinkedIn</a>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True) 
+
+st.markdown('<div class="team-card">', unsafe_allow_html=True)
+col1, col2 = st.columns([3, 1])
+with col1:
+    st.write("**Data Scientist** Nonhlanhla Magagula")
+with col2:
+    st.markdown('<a href="https://www.linkedin.com/in/nonhlanhla-magagula-b741b3207" target="_blank">🔗 LinkedIn</a>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True) 
+
+
 st.markdown("---")
 st.subheader("👩‍💻 Meet the Team")
 st.markdown("""
