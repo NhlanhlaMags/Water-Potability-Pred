@@ -1,8 +1,6 @@
 # ---------------------------
 # Load trained model
-# ---------------------------
-model = joblib.load('water_model.pkl')
-
+model = joblib.pipeline('rf_pipeline.pkl')
 # ---------------------------
 # Page Config
 # ---------------------------
