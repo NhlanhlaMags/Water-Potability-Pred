@@ -143,7 +143,7 @@ if mode == "🔹 Manual Input":
     st.write(input_df)
     
     if st.button("💧 Predict Water Safety"):
-        prediction = model.predict(input_df)
+        prediction = load_model.predict(input_df)
         prediction_proba = model.predict_proba(input_df)
 
         st.subheader("💡 Prediction Result")
