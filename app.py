@@ -212,16 +212,20 @@ st.markdown(f"""
 - F1 Score: {f1}
 """)
 
-# Feature importance placeholder
+# Feature importance using Streamlit only (no matplotlib)
 st.markdown("**Feature Importance:**")
-feat_importances = pd.Series([0.15,0.12,0.10,0.08,0.08,0.07,0.06,0.05,0.04], 
-                             index=['ph','Hardness','Solids','Chloramines','Sulfate','Conductivity','Organic_carbon','Trihalomethanes','Turbidity'])
-fig, ax = plt.subplots(figsize=(6,4))
-sns.barplot(x=feat_importances.values, y=feat_importances.index, ax=ax)
-ax.set_xlabel("Importance")
-ax.set_ylabel("Feature")
-plt.tight_layout()
-st.pyplot(fig)
+
+feature_data = pd.DataFrame({
+    'Feature': ['ph', 'Hardness', 'Solids', 'Chloramines', 'Sulfate', 
+                'Conductivity', 'Organic_carbon', 'Trihalomethanes', 'Turbidity'],
+    'Importance': [0.15, 0.12, 0.10, 0.08, 0.08, 0.07, 0.06, 0.05, 0.04]
+})
+
+# Display as bar chart using Streamlit
+st.bar_chart(feature_data.set_index('Feature'))
+
+# Or display as table
+st.dataframe(feature_data.sort_values('Importance', ascending=False))
 
 # ---------------------------
 # Meet the Team Section
