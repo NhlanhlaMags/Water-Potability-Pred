@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib 
 import streamlit as st
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
