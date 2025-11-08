@@ -71,7 +71,7 @@ This helps communities and municipalities **take quick, data-driven action** to 
 """)
 
 class WaterFeatureEngineer(BaseEstimator, TransformerMixin):
-def __init__ (self):
+ def __init__ (self):
  pass
 def fit(self, X, y=None):
 return self
