@@ -4,11 +4,6 @@ import joblib
 import streamlit as st
 import matplotlib as plt
 import seaborn as sns
-
-
-# --------------------------
-# Load trained model
-model = joblib.load('rf_pipeline.pkl')
 # ---------------------------
 # Page Config
 # ---------------------------
@@ -50,6 +45,32 @@ This helps communities and municipalities **take quick, data-driven action** to 
 # ---------------------------
 # Prediction Mode
 # ---------------------------
+@st.cache_resource
+def load_model():
+    try:
+        # Get script directory
+        current_dir = Path(__file__).parent
+
+        # Use correct relative path
+        model_path = current_dir / "rf_pipeline.pkl"
+
+        # Debug output
+        st.write(f"Loading model from: {model_path}")
+        st.write(f"File exists: {os.path.exists(model_path)}")
+
+        if not os.path.exists(model_path):
+            st.error(f"❌ Model file not found at: {model_path}")
+            return None
+
+        # Corrected syntax here
+        with open(model_path, 'rb') as f:
+            model = joblib.load(f)
+            st.success("✅ Model loaded successfully!")
+            return {"model": model, "preprocessor": None} # Return model in a dictionary
+
+    except Exception as e:
+        st.error(f"Model loading failed: {str(e)}")
+        return None
 st.markdown("---")
 st.subheader("🚀 Choose a Prediction Mode")
 mode = st.radio(
