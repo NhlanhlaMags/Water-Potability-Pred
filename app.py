@@ -92,6 +92,9 @@ def load_model():
     except Exception as e:
         st.error(f"Model loading failed: {str(e)}")
         return None
+        
+    model = load_model()
+    
 st.markdown("---")
 st.subheader("🚀 Choose a Prediction Mode")
 mode = st.radio(
