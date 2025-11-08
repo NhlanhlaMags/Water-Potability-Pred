@@ -178,11 +178,12 @@ st.markdown(f"""
 st.markdown("**Feature Importance:**")
 feat_importances = pd.Series([0.15,0.12,0.10,0.08,0.08,0.07,0.06,0.05,0.04], 
                              index=['ph','Hardness','Solids','Chloramines','Sulfate','Conductivity','Organic_carbon','Trihalomethanes','Turbidity'])
-plt.figure(figsize=(6,4))
+fig, ax = plt.subplots(figsize=(6,4))
 sns.barplot(x=feat_importances.values, y=feat_importances.index)
-plt.xlabel("Importance")
-plt.ylabel("Feature")
-st.pyplot(plt)
+ax.set_xlabel("Importance")
+ax.set_ylabel("Feature")
+plt.tight_layout()
+st.pyplot(fig)
 
 # ---------------------------
 # Meet the Team Section
