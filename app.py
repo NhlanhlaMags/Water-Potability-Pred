@@ -1,6 +1,14 @@
-# ---------------------------
+import pandas as pd
+import numpy as np
+import joblib 
+import streamlit as st
+import matplotlib as plt
+import seaborn as sns
+
+
+# --------------------------
 # Load trained model
-model = joblib.pipeline('rf_pipeline.pkl')
+model = joblib.load('rf_pipeline.pkl')
 # ---------------------------
 # Page Config
 # ---------------------------
