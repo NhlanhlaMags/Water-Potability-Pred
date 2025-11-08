@@ -72,10 +72,10 @@ This helps communities and municipalities **take quick, data-driven action** to 
 
 class WaterFeatureEngineer(BaseEstimator, TransformerMixin):
  def __init__ (self):
- pass
-def fit(self, X, y=None):
+  pass
+ def fit(self, X, y=None):
 return self
-def transform(self, X):
+ def transform(self, X):
 st.warning(" Using fallback WaterFeatureEngineer - no transformations applied")
 return X.copy()
 
