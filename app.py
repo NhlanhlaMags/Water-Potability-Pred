@@ -156,7 +156,7 @@ if mode == "🔹 Manual Input":
         if model is not None:
             try:
                 prediction = model.predict(input_df)
-                prob = model.predict_proba(input_df[0]
+                prob = model.predict_proba(input_df[0])
             except:
 # Fallback to demo mode if model fails
                 st.warning("⚠️ Using demo mode (model prediction failed)")
