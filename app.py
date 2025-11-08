@@ -164,8 +164,8 @@ elif mode == "📂 Batch CSV Upload":
         st.dataframe(df.head())
 
         if st.button("🚀 Predict for All Rows"):
-            processed_df = feature_engineering(df)
-            df['Potability_Prediction'] = model.predict(processed_df)
+            processed_df = feature_engineering(input_df)
+            df['Potability_Prediction'] = model.predict(input_df)
 
             st.success("✅ Predictions generated successfully!")
             st.dataframe(df.head())
