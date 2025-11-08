@@ -4,6 +4,12 @@ import joblib
 import streamlit as st
 import matplotlib as plt
 import seaborn as sns
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
+from custom_transformer import WaterFeature Engineer
 
 # ---------------------------
 # Page Config
