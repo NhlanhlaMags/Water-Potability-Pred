@@ -10,6 +10,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from custom_transformer import WaterFeatureEngineer
+from sklearn.base import BaseEstimator, TransformerMixin
 
 # ---------------------------
 # Page Config
@@ -68,6 +69,15 @@ Our model predicts whether water is safe or unsafe to drink using **chemical pro
 
 This helps communities and municipalities **take quick, data-driven action** to ensure water safety.
 """)
+
+class WaterFeatureEngineer(BaseEstimator, TransformerMixin):
+        def __init__(self):
+            pass
+        def fit(self, X, y=None):
+            return self
+        def transform(self, X):
+            st.warning(" Using fallback WaterFeatureEngineer - no transformations applied")
+            return X.copy()
 
 # ---------------------------
 # Prediction Mode
@@ -143,7 +153,7 @@ if mode == "🔹 Manual Input":
     st.write(input_df)
     
     if st.button("💧 Predict Water Safety"):
-        prediction = load_model.predict(input_df)
+        prediction = model.predict(input_df)
         prediction_proba = model.predict_proba(input_df)
 
         st.subheader("💡 Prediction Result")
