@@ -8,7 +8,7 @@ import seaborn as sns
 # ---------------------------
 # Page Config
 # ---------------------------
-st.markdown('<div class = "header-banner"> 💧 Water Potability Predictor' unsafe_allow_html=True)
+st.markdown('<div class = "header-banner"> 💧 Water Potability Predictor', unsafe_allow_html=True)
 st.set_page_config(
     page_title="NaN Masters | Water Potability Predictor",
     page_icon="💧",
