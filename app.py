@@ -173,7 +173,7 @@ elif mode == "📂 Batch CSV Upload":
         st.dataframe(df.head())
 
         if st.button("🚀 Predict for All Rows"):
-            processed_df = model.predict(input_df)
+            processed_df = load_model.predict(input_df)
             df['Potability_Prediction'] = model.predict(input_df)
 
             st.success("✅ Predictions generated successfully!")
