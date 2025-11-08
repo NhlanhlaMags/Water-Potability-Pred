@@ -153,17 +153,26 @@ if mode == "🔹 Manual Input":
     st.write(input_df)
     
     if st.button("💧 Predict Water Safety"):
-        prediction = model.predict(input_df)
-        prediction_proba = model.predict_proba(input_df)
-
-        st.subheader("💡 Prediction Result")
-        if prediction[0] == 1:
-            st.success("✅ The water is predicted to be **SAFE** to drink.")
-        else:
-            st.error("⚠️ The water is predicted to be **UNSAFE** to drink.")
-
-        st.write("Prediction Probability:")
-        st.write(f"Unsafe: {round(prediction_proba[0][0]*100, 2)}% | Safe: {round(prediction_proba[0][1]*100, 2)}%")
+        if model is not None:
+            try:
+                prediction = model.predict(input_df)
+                prob = model.predict_proba(input_df[0]
+            except:
+# Fallback to demo mode if model fails
+                st.warning("⚠️ Using demo mode (model prediction failed)")
+            
+# Simple rule-based prediction
+                ph = input_df['ph'].values[0]
+                if 6.5 <= ph <= 8.5:
+                    prediction = [1]
+                    prob = [0.3, 0.7]  # 70% safe
+                else:
+                    prediction = [0] 
+                    prob = [0.7, 0.3]  # 70% unsafe
+color = "green" if prediction[0] == 1 else "red"
+label = "✅ SAFE" if prediction[0] == 1 else "⚠️ UNSAFE"
+st.markdown(f"<h3 style='color:{color}'>{label}</h3>", unsafe_allow_html=True)
+st.write(f"Probability: Unsafe: {round(prob[0]*100, 2)}% | Safe: {round(prob[1]*100, 2)}%") 
 
 # ---------------------------
 # Batch CSV Upload Mode
