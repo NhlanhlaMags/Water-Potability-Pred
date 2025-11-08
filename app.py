@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import joblib 
+import joblib
 import streamlit as st
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -11,6 +11,8 @@ from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from custom_transformer import WaterFeatureEngineer
 from sklearn.base import BaseEstimator, TransformerMixin
+import os
+from pathlib import Path
 
 # ---------------------------
 # Page Config
@@ -48,13 +50,13 @@ st.markdown("""
 
 st.markdown("""
 ### 👥 Who We Are
-**We are NaN Masters** — a curious crew of data explorers, problem solvers, and change-makers.  
+**We are NaN Masters** — a curious crew of data explorers, problem solvers, and change-makers.
 Our mission? To turn raw data into real-world impact.
 
-We dive deep into numbers, patterns, and possibilities to help communities access **clean, safe, and sustainable water**.  
+We dive deep into numbers, patterns, and possibilities to help communities access **clean, safe, and sustainable water**.
 For us, every dataset tells a story — and we use technology to make that story count.
 
-With curiosity as our compass and innovation as our toolkit,  
+With curiosity as our compass and innovation as our toolkit,
 we’re here to prove that even from **NaN (Not a Number)** beginnings, great solutions can flow.
 """)
 
@@ -64,20 +66,20 @@ we’re here to prove that even from **NaN (Not a Number)** beginnings, great so
 st.markdown("---")
 st.subheader("🌍 Why This Matters")
 st.markdown("""
-Many communities worldwide lack access to **safe drinking water**, and testing is often **slow or unavailable**.  
+Many communities worldwide lack access to **safe drinking water**, and testing is often **slow or unavailable**.
 Our model predicts whether water is safe or unsafe to drink using **chemical properties like pH, turbidity, hardness, and more**.
 
 This helps communities and municipalities **take quick, data-driven action** to ensure water safety.
 """)
 
 class WaterFeatureEngineer(BaseEstimator, TransformerMixin):
- def __init__ (self):
-  pass
- def fit(self, X, y=None):
-  return self
- def transform(self, X):
-  st.warning(" Using fallback WaterFeatureEngineer - no transformations applied")
-  return X.copy()
+    def __init__ (self):
+        pass
+    def fit(self, X, y=None):
+        return self
+    def transform(self, X):
+        st.warning(" Using fallback WaterFeatureEngineer - no transformations applied")
+        return X.copy()
 
 # ---------------------------
 # Prediction Mode
@@ -108,9 +110,9 @@ def load_model():
     except Exception as e:
         st.error(f"Model loading failed: {str(e)}")
         return None
-        
-    model = load_model()
-    
+
+model_info = load_model() # Call load_model once here
+
 st.markdown("---")
 st.subheader("🚀 Choose a Prediction Mode")
 mode = st.radio(
@@ -147,32 +149,38 @@ if mode == "🔹 Manual Input":
             'Turbidity': Turbidity
         }
         return pd.DataFrame(data, index=[0])
-        
+
     input_df = user_input_features()
     st.subheader("🔍 Entered Water Quality Data:")
     st.write(input_df)
-    
+
     if st.button("💧 Predict Water Safety"):
-        if model is not None:
+        if model_info is not None and model_info["model"] is not None:
             try:
+                model = model_info["model"]
                 prediction = model.predict(input_df)
-                prob = model.predict_proba(input_df[0])
-            except:
-# Fallback to demo mode if model fails
+                # Ensure predict_proba returns a 2D array
+                prob = model.predict_proba(input_df)
+                prob = prob[0] # Access the first (and only) prediction's probabilities
+            except Exception as e:
+                st.error(f"Prediction failed: {str(e)}")
+                # Fallback to demo mode if model fails
                 st.warning("⚠️ Using demo mode (model prediction failed)")
-            
-# Simple rule-based prediction
+                # Simple rule-based prediction
                 ph = input_df['ph'].values[0]
                 if 6.5 <= ph <= 8.5:
                     prediction = [1]
                     prob = [0.3, 0.7]  # 70% safe
                 else:
-                    prediction = [0] 
+                    prediction = [0]
                     prob = [0.7, 0.3]  # 70% unsafe
-color = "green" if prediction[0] == 1 else "red"
-label = "✅ SAFE" if prediction[0] == 1 else "⚠️ UNSAFE"
-st.markdown(f"<h3 style='color:{color}'>{label}</h3>", unsafe_allow_html=True)
-st.write(f"Probability: Unsafe: {round(prob[0]*100, 2)}% | Safe: {round(prob[1]*100, 2)}%") 
+
+            color = "green" if prediction[0] == 1 else "red"
+            label = "✅ SAFE" if prediction[0] == 1 else "⚠️ UNSAFE"
+            st.markdown(f"<h3 style='color:{color}'>{label}</h3>", unsafe_allow_html=True)
+            st.write(f"Probability: Unsafe: {round(prob[0]*100, 2)}% | Safe: {round(prob[1]*100, 2)}%")
+        else:
+            st.error("Model not loaded. Cannot make prediction.")
 
 # ---------------------------
 # Batch CSV Upload Mode
@@ -180,7 +188,7 @@ st.write(f"Probability: Unsafe: {round(prob[0]*100, 2)}% | Safe: {round(prob[1]*
 elif mode == "📂 Batch CSV Upload":
     st.subheader("📁 Upload a CSV File for Batch Predictions")
     st.markdown("""
-    Upload a CSV file with these columns:  
+    Upload a CSV file with these columns:
     `ph, Hardness, Solids, Chloramines, Sulfate, Conductivity, Organic_carbon, Trihalomethanes, Turbidity`
     """)
 
@@ -192,14 +200,21 @@ elif mode == "📂 Batch CSV Upload":
         st.dataframe(df.head())
 
         if st.button("🚀 Predict for All Rows"):
-            processed_df = load_model.predict(input_df)
-            df['Potability_Prediction'] = model.predict(input_df)
+            if model_info is not None and model_info["model"] is not None:
+                model = model_info["model"]
+                try:
+                    # Apply the pipeline to the uploaded DataFrame
+                    # Assuming the pipeline handles feature engineering and scaling internally
+                    df['Potability'] = model.predict(df)
+                    st.success("✅ Predictions generated successfully!")
+                    st.dataframe(df.head())
 
-            st.success("✅ Predictions generated successfully!")
-            st.dataframe(df.head())
-
-            csv = df.to_csv(index=False).encode('utf-8')
-            st.download_button("⬇️ Download Predictions", csv, "predictions.csv", "text/csv")
+                    csv = df.to_csv(index=False).encode('utf-8')
+                    st.download_button("⬇️ Download Predictions", csv, "predictions.csv", "text/csv")
+                except Exception as e:
+                    st.error(f"Batch prediction failed: {str(e)}")
+            else:
+                st.error("Model not loaded. Cannot make batch predictions.")
     else:
         st.info("Please upload a CSV file to continue.")
 
@@ -216,18 +231,22 @@ recall = 0.80
 f1 = 0.81
 
 st.markdown(f"""
-**Model Performance (Demo Metrics):**  
-- Accuracy: {accuracy}  
-- Precision: {precision}  
-- Recall: {recall}  
+**Model Performance (Demo Metrics):**
+- Accuracy: {accuracy}
+- Precision: {precision}
+- Recall: {recall}
 - F1 Score: {f1}
 """)
 
 # Feature importance using Streamlit only (no matplotlib)
 st.markdown("**Feature Importance:**")
 
+# You'll need to get the actual feature importances from your trained model
+# For Random Forest (if that's your final model), you can access model.feature_importances_
+# Make sure the feature names match the order of features used during training
+# For now, using placeholder data
 feature_data = pd.DataFrame({
-    'Feature': ['ph', 'Hardness', 'Solids', 'Chloramines', 'Sulfate', 
+    'Feature': ['ph', 'Hardness', 'Solids', 'Chloramines', 'Sulfate',
                 'Conductivity', 'Organic_carbon', 'Trihalomethanes', 'Turbidity'],
     'Importance': [0.15, 0.12, 0.10, 0.08, 0.08, 0.07, 0.06, 0.05, 0.04]
 })
@@ -244,9 +263,9 @@ st.dataframe(feature_data.sort_values('Importance', ascending=False))
 st.markdown("---")
 st.subheader("👩‍💻 Meet the Team")
 st.markdown("""
-1. **Snenhlanhla Nsele** - Data Scientist - [LinkedIn](https://www.linkedin.com/in/sinenhlanhla-nsele-126a6a18a)  
-2. **Nonhlanhla Magagula** - Data Scientist - [LinkedIn](https://www.linkedin.com/in/nonhlanhla-magagula-b741b3207)  
-3. **Thandiwe Mkhabela** - Data Scientist - [LinkedIn](https://www.linkedin.com/in/thandiwe-m)  
+1. **Snenhlanhla Nsele** - Data Scientist - [LinkedIn](https://www.linkedin.com/in/sinenhlanhla-nsele-126a6a18a)
+2. **Nonhlanhla Magagula** - Data Scientist - [LinkedIn](https://www.linkedin.com/in/nonhlanhla-magagula-b741b3207)
+3. **Thandiwe Mkhabela** - Data Scientist - [LinkedIn](https://www.linkedin.com/in/thandiwe-m)
 4. **Thabiso Seema** - Software Engineer - [LinkedIn](https://www.linkedin.com/in/thabisoseema)
 """)
 
@@ -256,8 +275,8 @@ st.markdown("""
 st.markdown("---")
 st.subheader("🧩 Model Versioning Info")
 st.markdown("""
-- **Model Version:** 1.0  
-- **Last Updated:** Nov 2025  
+- **Model Version:** 1.0
+- **Last Updated:** Nov 2025
 - **Training Data:** 3,000+ samples
 """)
 
