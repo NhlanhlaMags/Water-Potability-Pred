@@ -111,12 +111,10 @@ if mode == "🔹 Manual Input":
     input_df = user_input_features()
     st.subheader("🔍 Entered Water Quality Data:")
     st.write(input_df)
-
-    processed_input = feature_engineering(input_df)
-
+    
     if st.button("💧 Predict Water Safety"):
-        prediction = model.predict(processed_input)
-        prediction_proba = model.predict_proba(processed_input)
+        prediction = model.predict(imput_df)
+        prediction_proba = model.predict_proba(nput_df)
 
         st.subheader("💡 Prediction Result")
         if prediction[0] == 1:
