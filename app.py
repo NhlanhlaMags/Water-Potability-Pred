@@ -9,7 +9,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
-from custom_transformer import WaterFeature Engineer
+from custom_transformer import WaterFeatureEngineer
 
 # ---------------------------
 # Page Config
